@@ -35,9 +35,6 @@
         var videoId = this.model.get('videoId');
         var config = new _play.PlayerConfiguration({dataMode: 'static', autoPlay: this.model.get('autoPlay')});
 
-        // Disable autoplay behavior (this is handled by custom code).
-        config.addOverride('autoPlay', 0);
-
         _play.control.addPlayer(id, videoId, 'video', config);
 
       }

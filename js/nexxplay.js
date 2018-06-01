@@ -75,17 +75,23 @@
   Drupal.behaviors.nexx = {
     attach: function (context, settings) {
       $(context).find('[data-nexx-video-id]').each(function () {
-        // Automatically start playback?
-        var autoPlay = $(this).attr('data-nexx-video-autoplay');
-        autoPlay = typeof autoPlay === 'undefined' || autoPlay === '' ? 0 : autoPlay;
-        autoPlay = autoPlay === 'false' || Number(autoPlay) === 0 ? 0 : autoPlay;
-        autoPlay = autoPlay === 'true' || Number(autoPlay) === 1 ? 1 : autoPlay;
-
-        var model = new Drupal.nexxPLAY.PlayerModel({
-          autoPlay: autoPlay,
+        var config = {
           containerId: $(this).attr('id'),
           videoId: $(this).attr('data-nexx-video-id')
-        });
+        };
+
+        // Automatically start playback?
+        var autoPlay = $(this).attr('data-nexx-video-autoplay');
+        if (typeof autoPlay !== 'undefined') {
+          if (autoPlay === 'false' || autoPlay === '0') {
+            config.autoPlay = 0;
+          } else if (autoPlay === 'true' || autoPlay === '1')
+          {
+            config.autoPlay = 1;
+          }
+        }
+
+        var model = new Drupal.nexxPLAY.PlayerModel(config);
 
         // Add model to collection.
         Drupal.nexxPLAY.collection.add(model);

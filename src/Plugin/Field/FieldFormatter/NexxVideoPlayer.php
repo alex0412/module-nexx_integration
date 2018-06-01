@@ -5,6 +5,7 @@ namespace Drupal\nexx_integration\Plugin\Field\FieldFormatter;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'nexx_video_player' formatter.
@@ -19,20 +20,57 @@ use Drupal\Core\Field\FieldItemListInterface;
  * )
  */
 class NexxVideoPlayer extends FormatterBase {
-
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+    $summary[] = $this->t('Autoplay: @value',
+      array('@value' => $this->getSetting('autoplay'))
+    );
+    
+    return $summary;
+  }
+  
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+        'autoplay' => '0',
+      ] + parent::defaultSettings();
+  }
+  
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element['autoplay'] = [
+      '#title' => $this->t('Autoplay'),
+      '#type' => 'select',
+      '#options' => [
+        //@todo: add option to consider default setting in Omnia
+        '0' => $this->t('Off'),
+        '1' => $this->t('On'),
+      ],
+      '#default_value' => $this->getSetting('autoplay'),
+    ];
+    
+    return $element;
+  }
+  
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode = NULL) {
     $elements = [];
-
+    
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
         '#theme' => 'nexx_player',
         '#container_id' => 'player--' . Crypt::randomBytesBase64(8),
         '#video_id' => $item->item_id,
-        // TODO #autoplay should be configurable.
-        '#autoplay' => '1',
+        '#autoplay' => $this->getSetting('autoplay'),
         '#attached' => [
           'library' => [
             'nexx_integration/base',
@@ -45,8 +83,7 @@ class NexxVideoPlayer extends FormatterBase {
          */
       ];
     }
-
+    
     return $elements;
   }
-
 }
