@@ -20,44 +20,46 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class NexxVideoPlayer extends FormatterBase {
+
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
     $summary = parent::settingsSummary();
     $summary[] = $this->t('autoPlay: @value',
-      array('@value' => $this->getOptions('autoPlay', $this->getSetting('autoPlay')))
+      ['@value' => $this->getOptions('autoPlay', $this->getSetting('autoPlay'))]
     );
     $summary[] = $this->t('exitMode: @value',
-      array('@value' => $this->getOptions('exitMode', $this->getSetting('exitMode')))
+      ['@value' => $this->getOptions('exitMode', $this->getSetting('exitMode'))]
     );
     $summary[] = $this->t('Ad settings: @value',
-      array('@value' => $this->getOptions('disableAds', $this->getSetting('disableAds')))
+      ['@value' => $this->getOptions('disableAds', $this->getSetting('disableAds'))]
     );
-    
+
     return $summary;
   }
-  
+
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
     return [
-        'autoPlay' => '0',
-        'exitMode' => '',
-        'disableAds' => '0',
-      ] + parent::defaultSettings();
+      'autoPlay' => '0',
+      'exitMode' => '',
+      'disableAds' => '0',
+    ] + parent::defaultSettings();
   }
-  
+
   /**
    * Helper function for easier setting display in settingsSummary().
    *
    * @return array|mixed|null
+   *   Returns the option array or the setting value/name (or null).
    */
   public function getOptions() {
     $options = [
       'autoPlay' => [
-        //@todo: add option to consider default setting in Omnia
+        // @todo: add option to consider default setting in Omnia
         '0' => $this->t('Off'),
         '1' => $this->t('On'),
       ],
@@ -71,20 +73,20 @@ class NexxVideoPlayer extends FormatterBase {
       'disableAds' => [
         '0' => $this->t('enabled'),
         '1' => $this->t('disabled'),
-      ]
+      ],
     ];
-    
+
     if (func_num_args() === 2) {
       return $options[func_get_arg(0)][func_get_arg(1)] ?? NULL;
     }
-    
+
     if (func_num_args() === 1) {
       return $options[func_get_arg(0)] ?? [];
     }
-    
+
     return [];
   }
-  
+
   /**
    * {@inheritdoc}
    */
@@ -95,30 +97,30 @@ class NexxVideoPlayer extends FormatterBase {
       '#options' => $this->getOptions('autoPlay'),
       '#default_value' => $this->getSetting('autoPlay'),
     ];
-    
+
     $element['exitMode'] = [
       '#title' => $this->t('exitMode'),
       '#type' => 'select',
       '#options' => $this->getOptions('exitMode'),
       '#default_value' => $this->getSetting('exitMode'),
     ];
-    
+
     $element['disableAds'] = [
       '#title' => $this->t('Ad settings'),
       '#type' => 'select',
       '#options' => $this->getOptions('disableAds'),
       '#default_value' => $this->getSetting('disableAds'),
     ];
-    
+
     return $element;
   }
-  
+
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode = NULL) {
     $elements = [];
-    
+
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
         '#theme' => 'nexx_player',
@@ -139,7 +141,8 @@ class NexxVideoPlayer extends FormatterBase {
          */
       ];
     }
-    
+
     return $elements;
   }
+
 }

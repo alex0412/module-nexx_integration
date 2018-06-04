@@ -191,7 +191,7 @@ function nexx_integration_theme() {
         'video_id' => NULL,
         'autoplay' => NULL,
         'exitMode' => NULL,
-        'disableAds' => NULL
+        'disableAds' => NULL,
       ],
       'template' => 'nexx-player',
     ],

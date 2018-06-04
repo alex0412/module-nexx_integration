@@ -85,8 +85,8 @@
         if (typeof autoPlay !== 'undefined') {
           if (autoPlay === 'false' || autoPlay === '0') {
             config.autoPlay = 0;
-          } else if (autoPlay === 'true' || autoPlay === '1')
-          {
+          }
+          else if (autoPlay === 'true' || autoPlay === '1') {
             config.autoPlay = 1;
           }
         }
