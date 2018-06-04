@@ -36,7 +36,8 @@
         var config = new _play.PlayerConfiguration({
           dataMode: 'static',
           autoPlay: this.model.get('autoPlay'),
-          exitMode: this.model.get('exitMode')
+          exitMode: this.model.get('exitMode'),
+          disableAds: this.model.get('disableAds')
         });
 
         _play.control.addPlayer(id, videoId, 'video', config);

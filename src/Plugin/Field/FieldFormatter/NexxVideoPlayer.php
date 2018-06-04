@@ -26,10 +26,13 @@ class NexxVideoPlayer extends FormatterBase {
   public function settingsSummary() {
     $summary = parent::settingsSummary();
     $summary[] = $this->t('autoPlay: @value',
-      array('@value' => $this->getSetting('autoPlay') === '0' ? $this->t('Off') : $this->t('On'))
+      array('@value' => $this->getOptions('autoPlay', $this->getSetting('autoPlay')))
     );
     $summary[] = $this->t('exitMode: @value',
-      array('@value' => $this->getSetting('exitMode') === '' ? $this->t('Omnia Default') : $this->getSetting('exitMode'))
+      array('@value' => $this->getOptions('exitMode', $this->getSetting('exitMode')))
+    );
+    $summary[] = $this->t('Ad settings: @value',
+      array('@value' => $this->getOptions('disableAds', $this->getSetting('disableAds')))
     );
     
     return $summary;
@@ -41,8 +44,45 @@ class NexxVideoPlayer extends FormatterBase {
   public static function defaultSettings() {
     return [
         'autoPlay' => '0',
-        'exitMode' => ''
+        'exitMode' => '',
+        'disableAds' => '0',
       ] + parent::defaultSettings();
+  }
+  
+  /**
+   * Helper function for easier setting display in settingsSummary().
+   *
+   * @return array|mixed|null
+   */
+  public function getOptions() {
+    $options = [
+      'autoPlay' => [
+        //@todo: add option to consider default setting in Omnia
+        '0' => $this->t('Off'),
+        '1' => $this->t('On'),
+      ],
+      'exitMode' => [
+        '' => $this->t('Omnia Default'),
+        'replay' => $this->t('replay'),
+        'loop' => $this->t('loop'),
+        'load' => $this->t('load'),
+        'navigate' => $this->t('navigate'),
+      ],
+      'disableAds' => [
+        '0' => $this->t('enabled'),
+        '1' => $this->t('disabled'),
+      ]
+    ];
+    
+    if (func_num_args() === 2) {
+      return $options[func_get_arg(0)][func_get_arg(1)] ?? NULL;
+    }
+    
+    if (func_num_args() === 1) {
+      return $options[func_get_arg(0)] ?? [];
+    }
+    
+    return [];
   }
   
   /**
@@ -52,25 +92,22 @@ class NexxVideoPlayer extends FormatterBase {
     $element['autoPlay'] = [
       '#title' => $this->t('autoPlay'),
       '#type' => 'select',
-      '#options' => [
-        //@todo: add option to consider default setting in Omnia
-        '0' => $this->t('Off'),
-        '1' => $this->t('On'),
-      ],
+      '#options' => $this->getOptions('autoPlay'),
       '#default_value' => $this->getSetting('autoPlay'),
     ];
-
+    
     $element['exitMode'] = [
       '#title' => $this->t('exitMode'),
       '#type' => 'select',
-      '#options' => [
-        '' => $this->t('Omnia Default'),
-        'replay' => $this->t('replay'),
-        'loop' => $this->t('loop'),
-        'load' => $this->t('load'),
-        'navigate' => $this->t('navigate'),
-      ],
+      '#options' => $this->getOptions('exitMode'),
       '#default_value' => $this->getSetting('exitMode'),
+    ];
+    
+    $element['disableAds'] = [
+      '#title' => $this->t('Ad settings'),
+      '#type' => 'select',
+      '#options' => $this->getOptions('disableAds'),
+      '#default_value' => $this->getSetting('disableAds'),
     ];
     
     return $element;
@@ -89,6 +126,7 @@ class NexxVideoPlayer extends FormatterBase {
         '#video_id' => $item->item_id,
         '#autoplay' => $this->getSetting('autoPlay'),
         '#exitMode' => $this->getSetting('exitMode'),
+        '#disableAds' => $this->getSetting('disableAds'),
         '#attached' => [
           'library' => [
             'nexx_integration/base',

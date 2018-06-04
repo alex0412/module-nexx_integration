@@ -137,3 +137,6 @@ field.formatter.settings.nexx_video_player:
     exitMode:
       type: string
       label: 'exitMode'
+    disableAds:
+      type: string
+      label: 'disableAds'

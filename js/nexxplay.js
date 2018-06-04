@@ -97,6 +97,12 @@
           config.exitMode = exitMode;
         }
 
+        // Disable Ads
+        var disableAds = $(this).attr('data-nexx-video-disableads');
+        if (typeof disableAds !== 'undefined' && disableAds !== '') {
+          config.disableAds = Number(disableAds);
+        }
+
         var model = new Drupal.nexxPLAY.PlayerModel(config);
 
         // Add model to collection.
