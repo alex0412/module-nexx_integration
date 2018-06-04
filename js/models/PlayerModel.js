@@ -22,6 +22,7 @@
      * @prop {boolean} apiIsReady
      * @prop {boolean} autoPlay
      * @prop {string} containerId
+     * @prop {string} exitMode
      * @prop {boolean} isPaused
      * @prop {boolean} isVisible
      * @prop {number} playerIndex
@@ -47,6 +48,11 @@
        * The HTML ID of the video container.
        */
       containerId: '',
+
+      /**
+       * The exitMode (loop, replay, load, navigate). Empty string equals to Omnia default.
+       */
+      exitMode: '',
 
       /**
        * Player is paused?

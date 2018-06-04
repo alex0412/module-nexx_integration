@@ -25,8 +25,11 @@ class NexxVideoPlayer extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = parent::settingsSummary();
-    $summary[] = $this->t('Autoplay: @value',
-      array('@value' => $this->getSetting('autoplay'))
+    $summary[] = $this->t('autoPlay: @value',
+      array('@value' => $this->getSetting('autoPlay') === '0' ? $this->t('Off') : $this->t('On'))
+    );
+    $summary[] = $this->t('exitMode: @value',
+      array('@value' => $this->getSetting('exitMode') === '' ? $this->t('Omnia Default') : $this->getSetting('exitMode'))
     );
     
     return $summary;
@@ -37,7 +40,8 @@ class NexxVideoPlayer extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'autoplay' => '0',
+        'autoPlay' => '0',
+        'exitMode' => ''
       ] + parent::defaultSettings();
   }
   
@@ -45,15 +49,28 @@ class NexxVideoPlayer extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element['autoplay'] = [
-      '#title' => $this->t('Autoplay'),
+    $element['autoPlay'] = [
+      '#title' => $this->t('autoPlay'),
       '#type' => 'select',
       '#options' => [
         //@todo: add option to consider default setting in Omnia
         '0' => $this->t('Off'),
         '1' => $this->t('On'),
       ],
-      '#default_value' => $this->getSetting('autoplay'),
+      '#default_value' => $this->getSetting('autoPlay'),
+    ];
+
+    $element['exitMode'] = [
+      '#title' => $this->t('exitMode'),
+      '#type' => 'select',
+      '#options' => [
+        '' => $this->t('Omnia Default'),
+        'replay' => $this->t('replay'),
+        'loop' => $this->t('loop'),
+        'load' => $this->t('load'),
+        'navigate' => $this->t('navigate'),
+      ],
+      '#default_value' => $this->getSetting('exitMode'),
     ];
     
     return $element;
@@ -70,7 +87,8 @@ class NexxVideoPlayer extends FormatterBase {
         '#theme' => 'nexx_player',
         '#container_id' => 'player--' . Crypt::randomBytesBase64(8),
         '#video_id' => $item->item_id,
-        '#autoplay' => $this->getSetting('autoplay'),
+        '#autoplay' => $this->getSetting('autoPlay'),
+        '#exitMode' => $this->getSetting('exitMode'),
         '#attached' => [
           'library' => [
             'nexx_integration/base',

@@ -33,7 +33,11 @@
       if (this.model.get('apiIsReady') && !this.model.playerIsInitialized()) {
         var id = this.model.get('containerId');
         var videoId = this.model.get('videoId');
-        var config = new _play.PlayerConfiguration({dataMode: 'static', autoPlay: this.model.get('autoPlay')});
+        var config = new _play.PlayerConfiguration({
+          dataMode: 'static',
+          autoPlay: this.model.get('autoPlay'),
+          exitMode: this.model.get('exitMode')
+        });
 
         _play.control.addPlayer(id, videoId, 'video', config);
 

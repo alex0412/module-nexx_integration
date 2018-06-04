@@ -129,8 +129,11 @@ field.value.nexx_video_data:
 
 field.formatter.settings.nexx_video_player:
   type: mapping
-  label: 'nexx_video_player autoplay'
+  label: 'Nexx Video Player formatter settings'
   mapping:
-    autoplay:
+    autoPlay:
       type: string
-      label: 'Autoplay'
+      label: 'autoPlay'
+    exitMode:
+      type: string
+      label: 'exitMode'

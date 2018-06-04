@@ -91,6 +91,12 @@
           }
         }
 
+        // Exit Mode
+        var exitMode = $(this).attr('data-nexx-video-exitmode');
+        if (typeof exitMode !== 'undefined' && exitMode !== '') {
+          config.exitMode = exitMode;
+        }
+
         var model = new Drupal.nexxPLAY.PlayerModel(config);
 
         // Add model to collection.
