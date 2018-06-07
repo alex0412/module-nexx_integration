@@ -51,8 +51,8 @@ class NexxVideoPlayer extends FormatterBase {
       'exitMode' => '',
       'disableAds' => '0',
       'advancedSettings' => [
-        'streamType' => 'video'
-      ]
+        'streamType' => 'video',
+      ],
     ] + parent::defaultSettings();
   }
 
@@ -139,7 +139,7 @@ class NexxVideoPlayer extends FormatterBase {
         '#type' => 'select',
         '#options' => $this->getOptions('streamType'),
         '#default_value' => $this->getSetting('advancedSettings')['streamType'],
-      ]
+      ],
     ];
 
     return $element;
