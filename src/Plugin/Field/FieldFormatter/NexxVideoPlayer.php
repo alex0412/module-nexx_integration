@@ -35,6 +35,9 @@ class NexxVideoPlayer extends FormatterBase {
     $summary[] = $this->t('Ad settings: @value',
       ['@value' => $this->getOptions('disableAds', $this->getSetting('disableAds'))]
     );
+    $summary[] = $this->t('Streamtype: @value',
+      ['@value' => $this->getOptions('streamType', $this->getSetting('advancedSettings')['streamType'])]
+    );
 
     return $summary;
   }
@@ -47,6 +50,9 @@ class NexxVideoPlayer extends FormatterBase {
       'autoPlay' => '0',
       'exitMode' => '',
       'disableAds' => '0',
+      'advancedSettings' => [
+        'streamType' => 'video'
+      ]
     ] + parent::defaultSettings();
   }
 
@@ -73,6 +79,19 @@ class NexxVideoPlayer extends FormatterBase {
       'disableAds' => [
         '0' => $this->t('enabled'),
         '1' => $this->t('disabled'),
+      ],
+      'streamType' => [
+        'video' => $this->t('video'),
+        'audio' => $this->t('audio'),
+        'live' => $this->t('live'),
+        'radio' => $this->t('radio'),
+        'scene' => $this->t('scene'),
+        'playlist' => $this->t('playlist'),
+        'audioalbum' => $this->t('audioalbum'),
+        'videolist' => $this->t('videolist'),
+        'audiolist' => $this->t('audiolist'),
+        'collection' => $this->t('collection'),
+        'panorama' => $this->t('panorama'),
       ],
     ];
 
@@ -112,6 +131,17 @@ class NexxVideoPlayer extends FormatterBase {
       '#default_value' => $this->getSetting('disableAds'),
     ];
 
+    $element['advancedSettings'] = [
+      '#title' => $this->t('Advanced settings'),
+      '#type' => 'details',
+      'streamType' => [
+        '#title' => $this->t('Stream type'),
+        '#type' => 'select',
+        '#options' => $this->getOptions('streamType'),
+        '#default_value' => $this->getSetting('advancedSettings')['streamType'],
+      ]
+    ];
+
     return $element;
   }
 
@@ -129,6 +159,7 @@ class NexxVideoPlayer extends FormatterBase {
         '#autoplay' => $this->getSetting('autoPlay'),
         '#exitMode' => $this->getSetting('exitMode'),
         '#disableAds' => $this->getSetting('disableAds'),
+        '#streamType' => $this->getSetting('advancedSettings')['streamType'],
         '#attached' => [
           'library' => [
             'nexx_integration/base',

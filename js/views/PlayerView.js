@@ -33,14 +33,16 @@
       if (this.model.get('apiIsReady') && !this.model.playerIsInitialized()) {
         var id = this.model.get('containerId');
         var videoId = this.model.get('videoId');
+        var streamType = this.model.get('streamType');
         var config = new _play.PlayerConfiguration({
-          dataMode: 'static',
+          // certain stream types do not work with the 'static' mode
+          dataMode: ['video', 'audio', 'live', 'panorama'].indexOf(streamType) !== -1 ? 'static' : 'api',
           autoPlay: this.model.get('autoPlay'),
           exitMode: this.model.get('exitMode'),
           disableAds: this.model.get('disableAds')
         });
 
-        _play.control.addPlayer(id, videoId, 'video', config);
+        _play.control.addPlayer(id, videoId, streamType, config);
 
       }
     },

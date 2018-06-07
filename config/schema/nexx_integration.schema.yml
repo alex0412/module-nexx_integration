@@ -140,3 +140,6 @@ field.formatter.settings.nexx_video_player:
     disableAds:
       type: string
       label: 'disableAds'
+    streamType:
+      type: string
+      label: 'streamType'

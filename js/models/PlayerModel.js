@@ -29,6 +29,7 @@
      * @prop {number} playerIndex
      * @prop {boolean} playerIsReady
      * @prop {string|null} state
+     * @prop {string} streamType
      * @prop {string|null} videoId
      */
     defaults: /** @lends Drupal.nexxPLAY.PlayerModel# */{
@@ -88,6 +89,11 @@
        * @param {string|null}
        */
       state: null,
+
+      /**
+       * @prop {string} streamType
+       */
+      streamType: 'video',
 
       /**
        * The video ID.

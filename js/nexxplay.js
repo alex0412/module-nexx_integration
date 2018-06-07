@@ -103,6 +103,12 @@
           config.disableAds = Number(disableAds);
         }
 
+        // Stream Type
+        var streamType = $(this).attr('data-nexx-video-streamtype');
+        if (typeof streamType !== 'undefined' && streamType !== '') {
+          config.streamType = streamType;
+        }
+
         var model = new Drupal.nexxPLAY.PlayerModel(config);
 
         // Add model to collection.
